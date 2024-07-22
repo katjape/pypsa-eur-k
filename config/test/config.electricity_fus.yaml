@@ -21,12 +21,8 @@ scenario:
 countries: ['BE']
 
 snapshots:
-  start: "2013-03-01"
-  end: "2013-03-10"
-
-enable:
-  retrieve_cost_data: false
-
+  start: "2030-03-01"
+  end: "2030-03-08"
 
 electricity:
   co2limit_enable: true
@@ -38,9 +34,11 @@ electricity:
     Store: [H2]
     Link: [H2 pipeline]
 
-  renewable_carriers: [solar, solar-hsat, onwind, offwind-ac, offwind-dc] #, offwind-float
+  renewable_carriers: [solar, solar-hsat, onwind, offwind-ac, offwind-dc, offwind-float]
   research_carriers: [fusion]
-  custom_powerplants: true
+
+enable:
+ retrieve_cost_data: false
 
 atlite:
   default_cutout: be-03-2013-era5

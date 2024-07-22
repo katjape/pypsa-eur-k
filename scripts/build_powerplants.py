@@ -107,7 +107,6 @@ def add_custom_powerplants(ppl, custom_powerplants, custom_ppl_query=False):
         [ppl, add_ppls], sort=False, ignore_index=True, verify_integrity=True
     )
 
-
 def add_everywhere_powerplants(ppl, substations, everywhere_powerplants):
     # Create a dataframe with "everywhere_powerplants" of stated carriers at the location of all substations
     everywhere_ppl = (

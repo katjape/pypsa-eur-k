@@ -270,6 +270,7 @@ def load_powerplants(ppl_fn):
         "bioenergy": "biomass",
         "ccgt, thermal": "CCGT",
         "hard coal": "coal",
+        "fusion" : "fusion",
     }
     return (
         pd.read_csv(ppl_fn, index_col=0, dtype={"bus": "str"})
@@ -443,7 +444,6 @@ def attach_wind_and_solar(
                 lifetime=costs.at[supcar, "lifetime"],
             )
 
-
 def attach_conventional_generators(
     n,
     costs,
@@ -469,6 +469,7 @@ def attach_conventional_generators(
         .join(costs, on="carrier", rsuffix="_r")
         .rename(index=lambda s: f"C{str(s)}")
     )
+
     ppl["efficiency"] = ppl.efficiency.fillna(ppl.efficiency_r)
 
     # reduce carriers to those in power plant dataset
@@ -519,6 +520,8 @@ def attach_conventional_generators(
         lifetime=(ppl.dateout - ppl.datein).fillna(np.inf),
         **committable_attrs,
     )
+    # print("Columns conventional: ", ppl.columns)
+    # ppl.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/ppl.csv")
 
     for carrier in set(conventional_params) & set(carriers):
         # Generators with technology affected
@@ -540,6 +543,42 @@ def attach_conventional_generators(
             else:
                 # Single value affecting all generators of technology k indiscriminantely of country
                 n.generators.loc[idx, attr] = values
+    
+
+def attach_fusion (n, costs, ppl, carriers):
+    add_missing_carriers(n, carriers)
+    # print("Is fusion in the carriers list?")
+    # print(n.carriers)
+    
+    ppl = (
+        ppl.query("carrier in @carriers")
+        .join(costs, on="carrier", rsuffix="_r")
+        .rename(index=lambda s: f"F{str(s)}")
+    )
+
+    ppl["efficiency"] = ppl.efficiency.fillna(ppl.efficiency_r)
+
+    # print("This should only show fusion powerplants:")
+    # print(ppl)
+    ppl.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/fusion.csv")
+
+    marginal_cost = (
+             ppl.carrier.map(costs.VOM) + ppl.carrier.map(costs.fuel) / ppl.efficiency
+         )
+
+    n.madd(
+         "Generator",
+        ppl.index,
+        carrier=ppl.carrier,
+        bus=ppl.bus,
+        p_nom_min=ppl.p_nom.where(ppl.carrier.isin(research_carriers), 0),
+        p_nom=ppl.p_nom.where(ppl.carrier.isin(research_carriers), 0),
+        efficiency=ppl.efficiency,
+        marginal_cost=marginal_cost,
+        capital_cost=costs.capital_cost,
+        build_year=ppl.datein.fillna(0).astype(int),
+        lifetime=(ppl.dateout - ppl.datein).fillna(np.inf),
+    )
 
 
 def attach_hydro(n, costs, ppl, profile_hydro, hydro_capacities, carriers, **params):
@@ -822,6 +861,9 @@ if __name__ == "__main__":
         params.electricity["max_hours"],
         Nyears,
     )
+    
+    costs.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/costs.csv")
+
     ppl = load_powerplants(snakemake.input.powerplants)
 
     attach_load(
@@ -837,6 +879,7 @@ if __name__ == "__main__":
     update_transmission_costs(n, costs, params.length_factor)
 
     renewable_carriers = set(params.electricity["renewable_carriers"])
+    research_carriers = params.electricity["research_carriers"]
     extendable_carriers = params.electricity["extendable_carriers"]
     conventional_carriers = params.electricity["conventional_carriers"]
     conventional_inputs = {
@@ -866,6 +909,13 @@ if __name__ == "__main__":
         conventional_inputs,
         unit_commitment=unit_commitment,
         fuel_price=fuel_price,
+    )
+
+    attach_fusion(
+        n,
+        costs,
+        ppl,
+        research_carriers,
     )
 
     attach_wind_and_solar(
@@ -932,3 +982,4 @@ if __name__ == "__main__":
 
     n.meta = snakemake.config
     n.export_to_netcdf(snakemake.output[0])
+

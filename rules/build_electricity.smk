@@ -428,7 +428,7 @@ rule add_electricity:
             else resources("networks/base.nc")
         ),
         tech_costs=lambda w: resources(
-            f"costs_{config_provider('costs', 'year')(w)}.csv"
+            f"costs_{config_provider('costs', 'year')(w)}.csv" # Draws cost data dynamically from the resources folder - manually replaced by fusion including excel
         ),
         regions=resources("regions_onshore.geojson"),
         powerplants=resources("powerplants.csv"),
