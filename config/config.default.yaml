@@ -117,7 +117,7 @@ electricity:
 
   conventional_carriers: [nuclear, oil, OCGT, CCGT, coal, lignite, geothermal, biomass]
   renewable_carriers: [solar, solar-hsat, onwind, offwind-ac, offwind-dc, offwind-float, hydro]
-  research_carriers: [fusion]
+  future_carriers: [fusion]
 
   estimate_renewable_capacities:
     enable: true
@@ -606,6 +606,8 @@ sector:
   biogas_upgrading_cc: false
   conventional_generation:
     OCGT: gas
+  fusion_generation:
+    fusion: fusion
   biomass_to_liquid: false
   biosng: false
   limit_max_growth:

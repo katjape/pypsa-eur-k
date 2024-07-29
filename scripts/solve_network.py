@@ -440,6 +440,7 @@ def prepare_network(
     planning_horizons=None,
     co2_sequestration_potential=None,
 ):
+
     if "clip_p_max_pu" in solve_opts:
         for df in (
             n.generators_t.p_max_pu,
@@ -1124,6 +1125,7 @@ if __name__ == "__main__":
     np.random.seed(solve_opts.get("seed", 123))
 
     n = pypsa.Network(snakemake.input.network)
+    n.links.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/prepare_network_links.csv")
 
     n = prepare_network(
         n,

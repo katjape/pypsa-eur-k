@@ -565,20 +565,24 @@ def attach_fusion (n, costs, ppl, carriers):
     marginal_cost = (
              ppl.carrier.map(costs.VOM) + ppl.carrier.map(costs.fuel) / ppl.efficiency
          )
+    
+    logger.info(f"Adding {len(ppl)} generators with capacities [GW]")
 
     n.madd(
-         "Generator",
+        "Generator",
         ppl.index,
         carrier=ppl.carrier,
         bus=ppl.bus,
-        p_nom_min=ppl.p_nom.where(ppl.carrier.isin(research_carriers), 0),
-        p_nom=ppl.p_nom.where(ppl.carrier.isin(research_carriers), 0),
+        p_nom_min=ppl.p_nom.where(ppl.carrier.isin(future_carriers), 0),
+        p_nom=ppl.p_nom.where(ppl.carrier.isin(future_carriers), 0),
         efficiency=ppl.efficiency,
         marginal_cost=marginal_cost,
         capital_cost=costs.capital_cost,
         build_year=ppl.datein.fillna(0).astype(int),
         lifetime=(ppl.dateout - ppl.datein).fillna(np.inf),
     )
+    n.generators.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/output_myopic_simplifynetwork_final network.csv")
+    print("Carriers are here:", n.carriers)
 
 
 def attach_hydro(n, costs, ppl, profile_hydro, hydro_capacities, carriers, **params):
@@ -879,7 +883,7 @@ if __name__ == "__main__":
     update_transmission_costs(n, costs, params.length_factor)
 
     renewable_carriers = set(params.electricity["renewable_carriers"])
-    research_carriers = params.electricity["research_carriers"]
+    future_carriers = params.electricity["future_carriers"]
     extendable_carriers = params.electricity["extendable_carriers"]
     conventional_carriers = params.electricity["conventional_carriers"]
     conventional_inputs = {
@@ -915,8 +919,10 @@ if __name__ == "__main__":
         n,
         costs,
         ppl,
-        research_carriers,
+        future_carriers,
     )
+
+    n.generators.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/generators.csv")
 
     attach_wind_and_solar(
         n,

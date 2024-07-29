@@ -630,3 +630,5 @@ if __name__ == "__main__":
 
     n.meta = dict(snakemake.config, **dict(wildcards=dict(snakemake.wildcards)))
     n.export_to_netcdf(snakemake.output.network)
+
+    n.generators.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/output_myopic_simplifynetwork_final network.csv")

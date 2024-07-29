@@ -22,13 +22,14 @@ scenario:
   planning_horizons:
   - 2030
 
-countries: ['BE']
+countries: ['DE', 'FR']
 
 snapshots:
   start: "2013-03-01"
-  end: "2013-03-08"
+  end: "2013-03-10"
 
 electricity:
+  co2limit_enable: false
 
   extendable_carriers:
     Generator: [OCGT]
@@ -37,6 +38,7 @@ electricity:
     Link: [H2 pipeline]
 
   renewable_carriers: [solar, solar-hsat, onwind, offwind-ac, offwind-dc, offwind-float]
+  custom_powerplants: true
 
 atlite:
   default_cutout: be-03-2013-era5
@@ -80,8 +82,8 @@ industry:
 
 solving:
   solver:
-    name: glpk
-    options: glpk-default
+    name: gurobi
+    options: gurobi-default
   mem: 4000
 
 plotting:

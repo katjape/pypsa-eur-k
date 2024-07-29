@@ -53,6 +53,11 @@ def define_spatial(nodes, options):
 
     spatial.nodes = nodes
 
+    # fusion
+    spatial.fusion = SimpleNamespace()
+    spatial.fusion.nodes = nodes + " fusion"
+    spatial.fusion.locations = nodes
+
     # biomass
 
     spatial.biomass = SimpleNamespace()
@@ -67,6 +72,7 @@ def define_spatial(nodes, options):
         spatial.biomass.locations = ["EU"]
         spatial.biomass.industry = ["solid biomass for industry"]
         spatial.biomass.industry_cc = ["solid biomass for industry CC"]
+
 
     spatial.biomass.df = pd.DataFrame(vars(spatial.biomass), index=nodes)
 
@@ -551,6 +557,7 @@ def add_carrier_buses(n, carrier, nodes=None):
         marginal_cost=costs.at[carrier, "fuel"],
     )
 
+    n.generators.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/prepare_Sctor_network_add_carrier_buses.csv")
 
 # TODO: PyPSA-Eur merge issue
 def remove_elec_base_techs(n):
@@ -560,6 +567,7 @@ def remove_elec_base_techs(n):
     here differently using links.
     """
     for c in n.iterate_components(snakemake.params.pypsa_eur):
+        print(f"Processing component: {c.name}")
         to_keep = snakemake.params.pypsa_eur[c.name]
         to_remove = pd.Index(c.df.carrier.unique()).symmetric_difference(to_keep)
         if to_remove.empty:
@@ -795,6 +803,7 @@ def add_dac(n, costs):
 
 
 def add_co2limit(n, options, nyears=1.0, limit=0.0):
+
     logger.info(f"Adding CO2 budget limit as per unit of 1990 levels of {limit}")
 
     countries = snakemake.params.countries
@@ -816,7 +825,6 @@ def add_co2limit(n, options, nyears=1.0, limit=0.0):
         type="co2_atmosphere",
         constant=co2_limit,
     )
-
 
 def cycling_shift(df, steps=1):
     """
@@ -859,6 +867,7 @@ def add_generation(n, costs):
 
     fallback = {"OCGT": "gas"}
     conventionals = options.get("conventional_generation", fallback)
+    logger.info("Conventional generation data: %s", conventionals)
 
     for generator, carrier in conventionals.items():
         carrier_nodes = vars(spatial)[carrier].nodes
@@ -881,6 +890,45 @@ def add_generation(n, costs):
             efficiency2=costs.at[carrier, "CO2 intensity"],
             lifetime=costs.at[generator, "lifetime"],
         )
+
+def add_fusion_generation (n, costs):
+    logger.info("Adding fusion electricity generation")
+
+    nodes = pop_layout.index
+
+    fallback = {"fusion": "fusion"}
+    fusion = options.get("fusion_generation", fallback)
+
+    for generator, carrier in fusion.items():
+        carrier_nodes = vars(spatial)[carrier].nodes
+
+        add_carrier_buses(n, carrier, carrier_nodes)
+
+        logger.info(f"Adding generator: {generator} with carrier: {carrier} ")
+
+        print("Fusion marginal costs: ", costs.at[generator, "efficiency"]
+             * costs.at[generator, "VOM"]),
+        print("Fusion capital costs: ", costs.at[generator, "efficiency"]
+            * costs.at[generator, "fixed"])
+
+        n.madd(
+            "Link",
+            nodes + " " + generator,
+            bus0=carrier_nodes,
+            bus1=nodes,
+            marginal_cost=costs.at[generator, "efficiency"]
+             * costs.at[generator, "VOM"],  # NB: VOM is per MWel
+            capital_cost=costs.at[generator, "efficiency"]
+            * costs.at[generator, "fixed"],  # NB: fixed cost is per MWel
+            p_nom_extendable=True,
+            carrier=generator,
+            efficiency=costs.at[generator, "efficiency"],
+            lifetime=costs.at[generator, "lifetime"],
+        )
+    n.links.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/links.csv")
+
+
+    logger.info(f"Generator {generator} added with nodes {carrier_nodes}")
 
 
 def add_ammonia(n, costs):
@@ -3973,6 +4021,7 @@ if __name__ == "__main__":
         snakemake.params.costs,
         nyears,
     )
+    costs.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/costs_input.csv")
 
     pop_weighted_energy_totals = (
         pd.read_csv(snakemake.input.pop_weighted_energy_totals, index_col=0) * nyears
@@ -3998,6 +4047,8 @@ if __name__ == "__main__":
     add_co2_tracking(n, costs, options)
 
     add_generation(n, costs)
+
+    add_fusion_generation(n, costs)
 
     add_storage_and_grids(n, costs)
 
@@ -4037,10 +4088,12 @@ if __name__ == "__main__":
     if options["allam_cycle"]:
         add_allam(n, costs)
 
+    n.links.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/output_prepare_sector_network_links1.csv")
+
     n = set_temporal_aggregation(
         n, snakemake.params.time_resolution, snakemake.input.snapshot_weightings
     )
-
+    n.links.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/output_prepare_sector_network_links2.csv")
     co2_budget = snakemake.params.co2_budget
     if isinstance(co2_budget, str) and co2_budget.startswith("cb"):
         fn = "results/" + snakemake.params.RDIR + "/csvs/carbon_budget_distribution.csv"
@@ -4103,7 +4156,11 @@ if __name__ == "__main__":
 
     n.meta = dict(snakemake.config, **dict(wildcards=dict(snakemake.wildcards)))
 
+    n.links.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/output_prepare_sector_network_links3.csv")
+
     sanitize_carriers(n, snakemake.config)
     sanitize_locations(n)
+
+    n.links.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/output_prepare_sector_network_links4.csv")
 
     n.export_to_netcdf(snakemake.output[0])

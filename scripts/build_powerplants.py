@@ -224,4 +224,6 @@ if __name__ == "__main__":
     cumcount = ppl.groupby(["bus", "Fueltype"]).cumcount() + 1
     ppl.Name = ppl.Name.where(cumcount == 1, ppl.Name + " " + cumcount.astype(str))
 
+    ppl.to_csv("/Users/katjapelzer/Thesis/MA_Git/test files/output_myopic_ppl.csv")
+
     ppl.reset_index(drop=True).to_csv(snakemake.output[0])

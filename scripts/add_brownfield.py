@@ -28,6 +28,8 @@ idx = pd.IndexSlice
 def add_brownfield(n, n_p, year):
     logger.info(f"Preparing brownfield for the year {year}")
 
+    n.generators.to_csv("output_myopic_generators_brownfield_start.csv")
+
     # electric transmission grid set optimised capacities of previous as minimum
     n.lines.s_nom_min = n_p.lines.s_nom_opt
     dc_i = n.links[n.links.carrier == "DC"].index
