@@ -17,13 +17,12 @@ copy_default_files(workflow)
 
 
 configfile: "config/config.default.yaml"
-configfile: "config/config.yaml"
+configfile: "/Users/katjapelzer/pypsa-eur-current/config/config.yaml"
 
 
 run = config["run"]
 scenarios = get_scenarios(run)
 RDIR = get_rdir(run)
-
 shared_resources = run["shared_resources"]["policy"]
 exclude_from_shared = run["shared_resources"]["exclude"]
 logs = path_provider("logs/", RDIR, shared_resources, exclude_from_shared)

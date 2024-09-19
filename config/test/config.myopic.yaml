@@ -15,15 +15,93 @@ foresight: myopic
 
 scenario:
   ll:
-  - v1.5
+  - vopt
   clusters:
-  - 5
+  - 20
   sector_opts:
   - ''
   planning_horizons:
+  #- 2020
+  #- 2025
   - 2030
+  - 2035
   - 2040
+  - 2045
   - 2050
+  - 2055
+
+# fusion configuration
+fusion:
+  include: true
+  entry_year: 2035
+
+capacity_constraints:
+  BAU_maxcapacities:
+    2030:
+      fusion: 0
+    2035:
+      fusion: 38.285
+    2040:
+      fusion: 493.339
+    2045:
+      fusion: 6357.220
+    2050: 
+      fusion: 22607.220
+    2055:
+      fusion: 38857.218
+    2060:
+      fusion: 55107.202
+    2065:
+      fusion: 71356.989
+    2070: 
+      fusion: 87604.249
+    2075: 
+      fusion: 103818.935
+    2080: 
+      fusion: 119613.880
+    2085: 
+      fusion: 130000
+    2090: 
+      fusion: 130000
+    2095:
+      fusion: 130000
+    2100:
+      fusion: 130000
+
+  BAU_mincapacities:
+    2030:
+      fusion: 0
+    2035: 
+      fusion: 0
+    2040:
+      fusion: 0
+    2045:
+      fusion: 0
+    2050:
+      fusion: 0
+    2055:
+      fusion: 0
+    2060:
+      fusion: 0
+    2065:
+      fusion: 0
+    2070:
+      fusion: 0
+    2075:
+      fusion: 0
+    2080:
+      fusion: 0
+    2085:
+      fusion: 0
+    2090:
+      fusion: 0
+    2095:
+      fusion: 0
+    2100:
+      fusion: 0
+
+  constraints:
+    BAU: true
 
 countries: ['BE']
 
@@ -56,6 +134,13 @@ atlite:
       y: [46., 56.]
       time: ["2013-03-01", "2013-03-08"]
 
+# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#enable
+enable:
+  retrieve: auto
+  retrieve_databundle: false
+  retrieve_cost_data: false #pypsa-eur-k
+
+
 renewable:
   onwind:
     cutout: be-03-2013-era5
@@ -86,8 +171,8 @@ industry:
 
 solving:
   solver:
-    name: glpk
-    options: glpk-default
+    name: gurobi
+    options: gurobi-default
   mem: 4000
 
 plotting:
@@ -101,3 +186,66 @@ plotting:
   energy_max:
   energy_min:
   energy_threshold: 0.000001
+
+# docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#biomass
+biomass:
+  year: 2030
+  scenario: ENS_Med
+  classes:
+    solid biomass:
+    - Agricultural waste
+    - Fuelwood residues
+    - Secondary Forestry residues - woodchips
+    - Sawdust
+    - Residues from landscape care
+    not included:
+    - Sugar from sugar beet
+    - Rape seed
+    - "Sunflower, soya seed "
+    - Bioethanol barley, wheat, grain maize, oats, other cereals and rye
+    - Miscanthus, switchgrass, RCG
+    - Willow
+    - Poplar
+    - FuelwoodRW
+    - C&P_RW
+    biogas:
+    - Manure solid, liquid
+    - Sludge
+    municipal solid waste:
+    - Municipal waste
+  share_unsustainable_use_retained:
+    2020: 1
+    2025: 0.66
+    2030: 0.33
+    2035: 0
+    2040: 0
+    2045: 0
+    2050: 0
+    2055: 0
+    2060: 0
+    2065: 0
+    2070: 0
+    2075: 0
+    2080: 0
+    2085: 0
+    2090: 0
+    2095: 0
+    2100: 0
+  share_sustainable_potential_available:
+    2020: 0
+    2025: 0.33
+    2030: 0.66
+    2035: 1
+    2040: 1
+    2045: 1
+    2050: 1
+    2055: 1
+    2060: 1
+    2065: 1
+    2070: 1
+    2075: 1
+    2080: 1
+    2085: 1
+    2090: 1
+    2095: 1
+    2100: 1

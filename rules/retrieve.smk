@@ -348,7 +348,7 @@ if config["enable"]["retrieve"]:
         params:
             zip="data/worldbank/API_SP.URB.TOTL.IN.ZS_DS2_en_csv_v2_3403768.zip",
         output:
-            gpkg="data/worldbank/API_SP.URB.TOTL.IN.ZS_DS2_en_csv_v2_3403768.csv",
+            gpkg="data/worldbank/API_SP.URB.TOTL.IN.ZS_DS2_en_csv_v2_1978.csv",
         run:
             import os
             import requests

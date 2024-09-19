@@ -629,14 +629,38 @@ def add_BAU_constraints(n, config):
     Which sets minimum expansion across all nodes e.g. in Europe to 100GW.
     OCGT bus 1 + OCGT bus 2 + ... > 100000
     """
-    mincaps = pd.Series(config["electricity"]["BAU_mincapacities"])
-    p_nom = n.model["Generator-p_nom"]
-    ext_i = n.generators.query("p_nom_extendable")
-    ext_carrier_i = xr.DataArray(ext_i.carrier.rename_axis("Generator-ext"))
-    lhs = p_nom.groupby(ext_carrier_i).sum()
-    rhs = mincaps[lhs.indexes["carrier"]].rename_axis("carrier")
-    n.model.add_constraints(lhs >= rhs, name="bau_mincaps")
+    current_horizon=snakemake.wildcards.planning_horizons
 
+    if "BAU_mincapacities" in config["capacity_constraints"]:    
+        # Added a function which sets a maximum capacity per carrier across all nodes (Aim: Fusion, which is added as a Link)
+        mincaps = pd.Series(config["capacity_constraints"]["BAU_mincapacities"][int(current_horizon)])
+        print("Minimum capacity: should be 0", mincaps)
+        p_nom = n.model["Generator-p_nom"]
+        ext_i = n.generators.query("p_nom_extendable")
+        ext_carrier_i = xr.DataArray(ext_i.carrier.rename_axis("Generator-ext"))
+        lhs = p_nom.groupby(ext_carrier_i).sum()
+        lhs = lhs[lhs.indexes["carrier"].isin(mincaps.index)]
+        rhs = mincaps[lhs.indexes["carrier"]].rename_axis("carrier")
+        n.model.add_constraints(lhs >= rhs, name="bau_mincaps")
+
+    if "BAU_maxcapacities" in config["capacity_constraints"]:    
+        # Added a function which sets a maximum capacity per carrier across all nodes (Aim: Fusion, which is added as a Link)
+        maxcaps = pd.Series(config["capacity_constraints"]["BAU_maxcapacities"][int(current_horizon)])
+        print("Current horizon:", current_horizon)
+        print("Should be 1000", maxcaps)
+        p_nom = n.model["Generator-p_nom"]
+        ext_j = n.generators.query("p_nom_extendable")
+        print("Extendable generators: ", ext_j)
+        ext_carrier_j = xr.DataArray(ext_j.carrier.rename_axis("Generator-ext"))
+        lhs = p_nom.groupby(ext_carrier_j).sum()
+        lhs = lhs[lhs.indexes["carrier"].isin(maxcaps.index)]
+        rhs = maxcaps[lhs.indexes["carrier"]].rename_axis("carrier")
+        n.model.add_constraints(lhs <= rhs, name="bau_maxcaps")
+    # Make sure lhs and rhs are correctly defined
+    print("Maxconstraints added:", "bau_maxcaps" in n.model.constraints)
+    print("Maxcaps should be here: ", n.model.constraints["bau_maxcaps"])
+    print("Minconstraints added:", "bau_mincaps" in n.model.constraints)
+    print("Mincaps should be here: ", n.model.constraints["bau_mincaps"])
 
 # TODO: think about removing or make per country
 def add_SAFE_constraints(n, config):
@@ -1104,3 +1128,5 @@ if __name__ == "__main__":
             allow_unicode=True,
             sort_keys=False,
         )
+
+    n.generators.to_csv("/Users/katjapelzer/Thesis/MA_Git/test_outputs/generators_new.csv")

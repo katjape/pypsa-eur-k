@@ -467,8 +467,9 @@ def add_heating_capacities_installed_before_baseyear(
                 logger.warning(
                     f"Grouping years >= baseyear are ignored. Dropping {too_large_grouping_years}."
                 )
+
             valid_grouping_years = pd.Series(
-                [
+                [   
                     int(grouping_year)
                     for grouping_year in grouping_years
                     if int(grouping_year) + default_lifetime > int(baseyear)

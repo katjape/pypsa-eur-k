@@ -6,7 +6,7 @@
 rule build_population_layouts:
     input:
         nuts3_shapes=resources("nuts3_shapes.geojson"),
-        urban_percent="data/worldbank/API_SP.URB.TOTL.IN.ZS_DS2_en_csv_v2_3403768.csv",
+        urban_percent="/Users/katjapelzer/pypsa-eur-current/data/worldbank/API_SP.URB.TOTL.IN.ZS_DS2_en_csv_v2_1978.csv",
         cutout=lambda w: "cutouts/"
         + CDIR
         + config_provider("atlite", "default_cutout")(w)
@@ -1016,6 +1016,8 @@ rule prepare_sector_network:
         heat_pump_sources=config_provider("sector", "heat_pump_sources"),
         heat_systems=config_provider("sector", "heat_systems"),
         energy_totals_year=config_provider("energy", "energy_totals_year"),
+        fusion_inclusion=config_provider("fusion","include"),
+        fusion_entry_year=config_provider("fusion","entry_year"),
     input:
         unpack(input_profile_offwind),
         **rules.cluster_gas_network.output,

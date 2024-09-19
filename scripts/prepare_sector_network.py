@@ -1060,6 +1060,31 @@ def add_dac(n, costs):
         lifetime=costs.at["direct air capture", "lifetime"],
     )
 
+def add_fusion_generation(
+        n,
+        costs
+):
+    logger.info("Adding fusion generation.")
+    nodes = pop_layout.index
+    n.add("Carrier", "fusion")
+    
+    costs.to_csv("/Users/katjapelzer/Thesis/MA_Git/test_outputs/costs.csv")
+
+    n.madd(
+        "Generator",
+        nodes + " fusion",
+        bus=nodes, #+ "fusion",
+        location=nodes,
+        carrier="fusion",
+        p_nom_extendable=True,
+        capital_costs=costs.at["fusion", "efficiency"]
+        * costs.at["fusion", "fixed"],  # NB: fixed cost is per MWel
+        marginal_costs=costs.at["fusion", "efficiency"]
+        * costs.at["fusion", "VOM"],  # NB: VOM is per MWel,
+        unit="MWh_el",
+        efficiency=costs.at["fusion", "efficiency"],
+        lifetime=costs.at["fusion", "lifetime"],
+    )
 
 def add_co2limit(n, options, nyears=1.0, limit=0.0):
     logger.info(f"Adding CO2 budget limit as per unit of 1990 levels of {limit}")
@@ -4602,6 +4627,13 @@ if __name__ == "__main__":
     add_co2_tracking(n, costs, options)
 
     add_generation(n, costs)
+    
+    if snakemake.params.fusion_inclusion:
+        current_horizon=snakemake.wildcards.planning_horizons
+        print("Current horizon:",int(current_horizon))
+        if snakemake.params.fusion_entry_year <= int(current_horizon):
+            add_fusion_generation(n,costs)
+            print("Fusion added at entry year of", snakemake.params.fusion_entry_year)
 
     add_storage_and_grids(n, costs)
 
