@@ -1,0 +1,65 @@
+Activating mamba environment...
+Navigating to the project directory...
+Set parameter WLSAccessID
+Set parameter WLSSecret
+Set parameter LicenseID to value 2548566
+Academic license 2548566 - for non-commercial use only - registered to ka___@tum.de
+Running Snakemake...
+Set parameter WLSAccessID
+Set parameter WLSSecret
+Set parameter LicenseID to value 2548566
+Academic license 2548566 - for non-commercial use only - registered to ka___@tum.de
+Set parameter WLSAccessID
+Set parameter WLSSecret
+Set parameter LicenseID to value 2548566
+Academic license 2548566 - for non-commercial use only - registered to ka___@tum.de
+Read LP format model from file /tmp/ge87say3/linopy-problem-l0n4uefp.lp
+Reading time = 0.00 seconds
+obj: 1 rows, 39 columns, 39 nonzeros
+Gurobi Optimizer version 11.0.3 build v11.0.3rc0 (linux64 - "SUSE Linux Enterprise Server 15 SP5")
+
+CPU model: Intel(R) Xeon(R) Platinum 8360HL CPU @ 3.00GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 96 physical cores, 192 logical processors, using up to 32 threads
+
+Academic license 2548566 - for non-commercial use only - registered to ka___@tum.de
+Optimize a model with 1 rows, 39 columns and 39 nonzeros
+Model fingerprint: 0x804b5f26
+Model has 39 quadratic objective terms
+Variable types: 0 continuous, 39 integer (0 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e-01, 4e+01]
+  QObjective range [2e+00, 2e+00]
+  Bounds range     [1e+00, 6e+02]
+  RHS range        [1e+02, 1e+02]
+Found heuristic solution: objective 3544.8699837
+Presolve removed 0 rows and 1 columns
+Presolve time: 0.00s
+Presolved: 1 rows, 38 columns, 38 nonzeros
+Presolved model has 38 quadratic objective terms
+Variable types: 0 continuous, 38 integer (0 binary)
+Found heuristic solution: objective 2410.4571841
+
+Root relaxation: objective -1.347733e+03, 5 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 -1347.7326    0   19 2410.45718 -1347.7326   156%     -    0s
+H    0     0                    -1346.048490 -1347.7326  0.13%     -    0s
+     0     0 -1347.4725    0   19 -1346.0485 -1347.4725  0.11%     -    0s
+     0     0 -1347.4725    0   19 -1346.0485 -1347.4725  0.11%     -    1s
+     0     0 -1347.1452    0   19 -1346.0485 -1347.1452  0.08%     -    1s
+     0     2 -1347.1452    0   19 -1346.0485 -1347.1452  0.08%     -    1s
+
+Explored 154 nodes (373 simplex iterations) in 1.83 seconds (0.00 work units)
+Thread count was 32 (of 192 available processors)
+
+Solution count 3: -1346.05 2410.46 3544.87 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.346048489654e+03, best bound -1.346112129798e+03, gap 0.0047%
+Warning: environment still referenced so free is deferred (Continue to use WLS)
+Current horizon: 2055
+Current horizon: 2030
+Snakemake execution failed. Exiting.

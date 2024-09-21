@@ -1,0 +1,327 @@
+Building DAG of jobs...
+Unlocked working directory.
+Assuming unrestricted shared filesystem usage.
+Building DAG of jobs...
+Retrieving .snakemake/storage/http/zenodo.org/records/10356004/files/ENSPRESO_BIOMASS.xlsx from storage.
+Retrieving .snakemake/storage/http/gitlab.com/hotmaps/industrial_sites/industrial_sites_Industrial_Database/-/raw/master/data/Industrial_Database.csv from storage.
+Retrieving from storage: https://zenodo.org/records/10356004/files/ENSPRESO_BIOMASS.xlsx
+Finished retrieval.
+Retrieving from storage: https://gitlab.com/hotmaps/industrial_sites/industrial_sites_Industrial_Database/-/raw/master/data/Industrial_Database.csv
+Finished retrieval.
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Conda environments: ignored
+Job stats:
+job                                                 count
+------------------------------------------------  -------
+add_brownfield                                          7
+add_electricity                                         1
+add_existing_baseyear                                   1
+add_extra_components                                    1
+all                                                     1
+build_biomass_potentials                                8
+build_clustered_population_layouts                      1
+build_cop_profiles                                      1
+build_daily_heat_demand                                 1
+build_district_heat_share                               8
+build_electricity_demand                                1
+build_energy_totals                                     1
+build_existing_heating_distribution                     1
+build_gas_input_locations                               1
+build_heat_totals                                       1
+build_hourly_heat_demand                                1
+build_industrial_distribution_key                       1
+build_industrial_energy_demand_per_country_today        1
+build_industrial_energy_demand_per_node                 8
+build_industrial_energy_demand_per_node_today           1
+build_industrial_production_per_country                 1
+build_industrial_production_per_country_tomorrow        8
+build_industrial_production_per_node                    8
+build_industry_sector_ratios_intermediate               8
+build_population_weighted_energy_totals                 2
+build_renewable_profiles                                6
+build_salt_cavern_potentials                            1
+build_ship_raster                                       1
+build_shipping_demand                                   1
+build_simplified_population_layouts                     1
+build_temperature_profiles                              1
+build_transport_demand                                  1
+cluster_gas_network                                     1
+cluster_network                                         1
+make_summary                                            1
+plot_hydrogen_network                                   8
+plot_power_network                                      8
+plot_power_network_clustered                            1
+plot_summary                                            1
+prepare_network                                         1
+prepare_sector_network                                  8
+retrieve_databundle                                     1
+simplify_network                                        1
+solve_sector_network_myopic                             8
+time_aggregation                                        1
+total                                                 127
+
+Select jobs to execute...
+Execute 2 jobs...
+
+[Mon Sep 16 17:44:17 2024]
+localrule build_electricity_demand:
+    input: data/electricity_demand_raw.csv, data/load_synthetic_raw.csv
+    output: resources/electricity_demand.csv
+    log: logs/build_electricity_demand.log
+    jobid: 27
+    reason: Code has changed since last execution; Params have changed since last execution
+    resources: tmpdir=/tmp/ge87say3, mem_mb=5000, mem_mib=4769
+
+[Mon Sep 16 17:44:17 2024]
+localrule retrieve_databundle:
+    output: data/bundle/je-e-21.03.02.xls, data/bundle/NUTS_2013_60M_SH/data/NUTS_RG_60M_2013.shp, data/bundle/nama_10r_3popgdp.tsv.gz, data/bundle/nama_10r_3gdp.tsv.gz, data/bundle/corine/g250_clc06_V18_5.tif, data/bundle/eea/UNFCCC_v23.csv, data/bundle/nuts/NUTS_RG_10M_2013_4326_LEVL_2.geojson, data/bundle/emobility/KFZ__count, data/bundle/emobility/Pkw__count, data/bundle/h2_salt_caverns_GWh_per_sqkm.geojson, data/bundle/natura/natura.tiff, data/bundle/gebco/GEBCO_2014_2D.nc, data/bundle/GDP_per_capita_PPP_1990_2015_v2.nc, data/bundle/ppp_2013_1km_Aggregated.tif, data/bundle/jrc-idees-2015
+    log: logs/retrieve_databundle.log
+    jobid: 11
+    reason: Code has changed since last execution
+    resources: tmpdir=/tmp/ge87say3, mem_mb=1000, mem_mib=954
+
+INFO:__main__:Downloading databundle from 'https://zenodo.org/records/12760663/files/bundle.tar.xz'.
+INFO:__main__:Linearly interpolate gaps of size 3 and less.
+INFO:__main__:Filling larger gaps by copying time-slices of period '1w'.
+INFO:__main__:Supplement missing data with synthetic data.
+ERROR:root:Uncaught exception
+Traceback (most recent call last):
+  File "/dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/.snakemake/scripts/tmpf9wg06hn.build_electricity_demand.py", line 319, in <module>
+    synthetic_load = synthetic_load.loc[snapshots, countries]
+                     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexing.py", line 1184, in __getitem__
+    return self._getitem_tuple(key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexing.py", line 1375, in _getitem_tuple
+    return self._multi_take(tup)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexing.py", line 1327, in _multi_take
+    axis: self._get_listlike_indexer(key, axis)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexing.py", line 1558, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 6200, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 6249, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [DatetimeIndex(['2013-01-01 00:00:00', '2013-01-01 01:00:00',\n               '2013-01-01 02:00:00', '2013-01-01 03:00:00',\n               '2013-01-01 04:00:00', '2013-01-01 05:00:00',\n               '2013-01-01 06:00:00', '2013-01-01 07:00:00',\n               '2013-01-01 08:00:00', '2013-01-01 09:00:00',\n               ...\n               '2013-12-31 14:00:00', '2013-12-31 15:00:00',\n               '2013-12-31 16:00:00', '2013-12-31 17:00:00',\n               '2013-12-31 18:00:00', '2013-12-31 19:00:00',\n               '2013-12-31 20:00:00', '2013-12-31 21:00:00',\n               '2013-12-31 22:00:00', '2013-12-31 23:00:00'],\n              dtype='datetime64[ns]', length=8760, freq='h')] are in the [index]"
+RuleException:
+CalledProcessError in file /dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/rules/build_electricity.smk, line 28:
+Command 'set -euo pipefail;  /dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/bin/python3.12 /dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/.snakemake/scripts/tmpf9wg06hn.build_electricity_demand.py' returned non-zero exit status 1.
+[Mon Sep 16 17:44:20 2024]
+Error in rule build_electricity_demand:
+    jobid: 27
+    input: data/electricity_demand_raw.csv, data/load_synthetic_raw.csv
+    output: resources/electricity_demand.csv
+    log: logs/build_electricity_demand.log (check log file(s) for error details)
+    conda-env: /dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/.snakemake/conda/79c17149f97f6bd8020a13b31e388426_
+
+INFO:__main__:Extracting databundle.
+/dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/.snakemake/scripts/tmpxpfhnuwp.retrieve_databundle.py:66: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+  tarfile.open(tarball_fn).extractall(to_fn)
+INFO:__main__:Unlinking tarball.
+INFO:__main__:Databundle available in 'data'.
+[Mon Sep 16 17:44:38 2024]
+Finished job 11.
+1 of 127 steps (1%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-09-16T174413.562158.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.
+Config file /dss/dssfs02/lwp-dss-0001/pn39ci/pn39ci-dss-0000/MA_Git/config/config.default.yaml is extended by additional config specified via the command line.
+Config file /dss/dssfs02/lwp-dss-0001/pn39ci/pn39ci-dss-0000/MA_Git/config/config_2035.yaml is extended by additional config specified via the command line.
+Assuming unrestricted shared filesystem usage.
+Building DAG of jobs...
+Retrieving .snakemake/storage/http/gitlab.com/hotmaps/industrial_sites/industrial_sites_Industrial_Database/-/raw/master/data/Industrial_Database.csv from storage.
+Retrieving .snakemake/storage/http/zenodo.org/records/10356004/files/ENSPRESO_BIOMASS.xlsx from storage.
+Retrieving from storage: https://gitlab.com/hotmaps/industrial_sites/industrial_sites_Industrial_Database/-/raw/master/data/Industrial_Database.csv
+Finished retrieval.
+Retrieving from storage: https://zenodo.org/records/10356004/files/ENSPRESO_BIOMASS.xlsx
+Finished retrieval.
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Conda environments: ignored
+Job stats:
+job                                                 count
+------------------------------------------------  -------
+add_brownfield                                          7
+add_electricity                                         1
+add_existing_baseyear                                   1
+add_extra_components                                    1
+all                                                     1
+base_network                                            1
+build_biomass_potentials                                8
+build_clustered_population_layouts                      1
+build_cop_profiles                                      1
+build_daily_heat_demand                                 1
+build_district_heat_share                               8
+build_electricity_demand                                1
+build_energy_totals                                     1
+build_existing_heating_distribution                     1
+build_gas_input_locations                               1
+build_heat_totals                                       1
+build_hourly_heat_demand                                1
+build_industrial_distribution_key                       1
+build_industrial_energy_demand_per_country_today        1
+build_industrial_energy_demand_per_node                 8
+build_industrial_energy_demand_per_node_today           1
+build_industrial_production_per_country                 1
+build_industrial_production_per_country_tomorrow        8
+build_industrial_production_per_node                    8
+build_industry_sector_ratios_intermediate               8
+build_population_layouts                                1
+build_population_weighted_energy_totals                 2
+build_powerplants                                       1
+build_renewable_profiles                                6
+build_salt_cavern_potentials                            1
+build_shapes                                            1
+build_ship_raster                                       1
+build_shipping_demand                                   1
+build_simplified_population_layouts                     1
+build_temperature_profiles                              1
+build_transmission_projects                             1
+build_transport_demand                                  1
+cluster_gas_network                                     1
+cluster_network                                         1
+make_summary                                            1
+plot_hydrogen_network                                   8
+plot_power_network                                      8
+plot_power_network_clustered                            1
+plot_summary                                            1
+prepare_network                                         1
+prepare_sector_network                                  8
+simplify_network                                        1
+solve_sector_network_myopic                             8
+time_aggregation                                        1
+total                                                 131
+
+Select jobs to execute...
+Execute 2 jobs...
+
+[Mon Sep 16 17:44:42 2024]
+localrule build_electricity_demand:
+    input: data/electricity_demand_raw.csv, data/load_synthetic_raw.csv
+    output: resources/electricity_demand.csv
+    log: logs/build_electricity_demand.log
+    jobid: 27
+    reason: Missing output files: resources/electricity_demand.csv
+    resources: tmpdir=/tmp/ge87say3, mem_mb=5000, mem_mib=4769
+
+[Mon Sep 16 17:44:42 2024]
+localrule build_ship_raster:
+    input: data/shipdensity_global.zip, cutouts/europe-2013-sarah3-era5.nc
+    output: resources/shipdensity_raster.tif
+    log: logs/build_ship_raster.log
+    jobid: 12
+    benchmark: benchmarks/build_ship_raster
+    reason: Updated input files: data/shipdensity_global.zip, cutouts/europe-2013-sarah3-era5.nc
+    resources: tmpdir=/tmp/ge87say3, mem_mb=5000, mem_mib=4769
+
+INFO:__main__:Linearly interpolate gaps of size 3 and less.
+INFO:__main__:Filling larger gaps by copying time-slices of period '1w'.
+INFO:__main__:Supplement missing data with synthetic data.
+ERROR:root:Uncaught exception
+Traceback (most recent call last):
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/xarray/backends/file_manager.py", line 211, in _acquire_with_cache_info
+    file = self._cache[self._key]
+           ~~~~~~~~~~~^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/xarray/backends/lru_cache.py", line 56, in __getitem__
+    value = self._cache[key]
+            ~~~~~~~~~~~^^^^^
+KeyError: [<class 'netCDF4._netCDF4.Dataset'>, ('/dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/cutouts/europe-2013-sarah3-era5.nc',), 'r', (('clobber', True), ('diskless', False), ('format', 'NETCDF4'), ('persist', False)), '39141159-5a20-4175-a7bc-d1fe9d797972']
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/.snakemake/scripts/tmp_cw628e7.build_ship_raster.py", line 91, in <module>
+    x, X, y, Y = determine_cutout_xXyY(snakemake.input.cutout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/.snakemake/scripts/tmp_cw628e7.build_ship_raster.py", line 76, in determine_cutout_xXyY
+    cutout = atlite.Cutout(cutout_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/atlite/cutout.py", line 187, in __init__
+    data = xr.open_dataset(str(path))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/xarray/backends/api.py", line 588, in open_dataset
+    backend_ds = backend.open_dataset(
+                 ^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/xarray/backends/netCDF4_.py", line 645, in open_dataset
+    store = NetCDF4DataStore.open(
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/xarray/backends/netCDF4_.py", line 408, in open
+    return cls(manager, group=group, mode=mode, lock=lock, autoclose=autoclose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/xarray/backends/netCDF4_.py", line 355, in __init__
+    self.format = self.ds.data_model
+                  ^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/xarray/backends/netCDF4_.py", line 417, in ds
+    return self._acquire()
+           ^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/xarray/backends/netCDF4_.py", line 411, in _acquire
+    with self._manager.acquire_context(needs_lock) as root:
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/xarray/backends/file_manager.py", line 199, in acquire_context
+    file, cached = self._acquire_with_cache_info(needs_lock)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/xarray/backends/file_manager.py", line 217, in _acquire_with_cache_info
+    file = self._opener(*self._args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "src/netCDF4/_netCDF4.pyx", line 2470, in netCDF4._netCDF4.Dataset.__init__
+  File "src/netCDF4/_netCDF4.pyx", line 2107, in netCDF4._netCDF4._ensure_nc_success
+OSError: [Errno -101] NetCDF: HDF error: '/dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/cutouts/europe-2013-sarah3-era5.nc'
+RuleException:
+CalledProcessError in file /dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/rules/build_electricity.smk, line 164:
+Command 'set -euo pipefail;  /dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/bin/python3.12 /dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/.snakemake/scripts/tmp_cw628e7.build_ship_raster.py' returned non-zero exit status 1.
+[Mon Sep 16 17:44:46 2024]
+Error in rule build_ship_raster:
+    jobid: 12
+    input: data/shipdensity_global.zip, cutouts/europe-2013-sarah3-era5.nc
+    output: resources/shipdensity_raster.tif
+    log: logs/build_ship_raster.log (check log file(s) for error details)
+    conda-env: /dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/.snakemake/conda/79c17149f97f6bd8020a13b31e388426_
+
+ERROR:root:Uncaught exception
+Traceback (most recent call last):
+  File "/dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/.snakemake/scripts/tmpxa77idpo.build_electricity_demand.py", line 319, in <module>
+    synthetic_load = synthetic_load.loc[snapshots, countries]
+                     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexing.py", line 1184, in __getitem__
+    return self._getitem_tuple(key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexing.py", line 1375, in _getitem_tuple
+    return self._multi_take(tup)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexing.py", line 1327, in _multi_take
+    axis: self._get_listlike_indexer(key, axis)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexing.py", line 1558, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 6200, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 6249, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [DatetimeIndex(['2013-01-01 00:00:00', '2013-01-01 01:00:00',\n               '2013-01-01 02:00:00', '2013-01-01 03:00:00',\n               '2013-01-01 04:00:00', '2013-01-01 05:00:00',\n               '2013-01-01 06:00:00', '2013-01-01 07:00:00',\n               '2013-01-01 08:00:00', '2013-01-01 09:00:00',\n               ...\n               '2013-12-31 14:00:00', '2013-12-31 15:00:00',\n               '2013-12-31 16:00:00', '2013-12-31 17:00:00',\n               '2013-12-31 18:00:00', '2013-12-31 19:00:00',\n               '2013-12-31 20:00:00', '2013-12-31 21:00:00',\n               '2013-12-31 22:00:00', '2013-12-31 23:00:00'],\n              dtype='datetime64[ns]', length=8760, freq='h')] are in the [index]"
+RuleException:
+CalledProcessError in file /dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/rules/build_electricity.smk, line 28:
+Command 'set -euo pipefail;  /dss/dsshome1/05/ge87say3/miniforge3/envs/pypsa-eur/bin/python3.12 /dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/.snakemake/scripts/tmpxa77idpo.build_electricity_demand.py' returned non-zero exit status 1.
+[Mon Sep 16 17:44:46 2024]
+Error in rule build_electricity_demand:
+    jobid: 27
+    input: data/electricity_demand_raw.csv, data/load_synthetic_raw.csv
+    output: resources/electricity_demand.csv
+    log: logs/build_electricity_demand.log (check log file(s) for error details)
+    conda-env: /dss/dsshome1/05/ge87say3/Thesis/pypsa-eur-k/.snakemake/conda/79c17149f97f6bd8020a13b31e388426_
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-09-16T174439.626294.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

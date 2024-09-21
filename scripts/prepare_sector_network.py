@@ -1067,8 +1067,6 @@ def add_fusion_generation(
     logger.info("Adding fusion generation.")
     nodes = pop_layout.index
     n.add("Carrier", "fusion")
-    
-    costs.to_csv("/Users/katjapelzer/Thesis/MA_Git/test_outputs/costs.csv")
 
     n.madd(
         "Generator",

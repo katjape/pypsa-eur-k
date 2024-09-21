@@ -1128,5 +1128,3 @@ if __name__ == "__main__":
             allow_unicode=True,
             sort_keys=False,
         )
-
-    n.generators.to_csv("/Users/katjapelzer/Thesis/MA_Git/test_outputs/generators_new.csv")

@@ -17,7 +17,7 @@ copy_default_files(workflow)
 
 
 configfile: "config/config.default.yaml"
-configfile: "/Users/katjapelzer/pypsa-eur-current/config/config.yaml"
+configfile: "/dss/dssfs02/lwp-dss-0001/pn39ci/pn39ci-dss-0000/MA_Git/config/config.scenarios.base.yaml"
 
 
 run = config["run"]
