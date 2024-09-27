@@ -630,10 +630,14 @@ def add_BAU_constraints(n, config):
     OCGT bus 1 + OCGT bus 2 + ... > 100000
     """
     current_horizon=snakemake.wildcards.planning_horizons
+    t = int(current_horizon)- int(snakemake.params.fusion_entry_year)
+
+    if t<0:
+        t=-5
 
     if "BAU_mincapacities" in config["capacity_constraints"]:    
         # Added a function which sets a maximum capacity per carrier across all nodes (Aim: Fusion, which is added as a Link)
-        mincaps = pd.Series(config["capacity_constraints"]["BAU_mincapacities"][int(current_horizon)])
+        mincaps = pd.Series(config["capacity_constraints"]["BAU_mincapacities"][t])
         print("Minimum capacity: should be 0", mincaps)
         p_nom = n.model["Generator-p_nom"]
         ext_i = n.generators.query("p_nom_extendable")
@@ -645,7 +649,7 @@ def add_BAU_constraints(n, config):
 
     if "BAU_maxcapacities" in config["capacity_constraints"]:    
         # Added a function which sets a maximum capacity per carrier across all nodes (Aim: Fusion, which is added as a Link)
-        maxcaps = pd.Series(config["capacity_constraints"]["BAU_maxcapacities"][int(current_horizon)])
+        maxcaps = pd.Series(config["capacity_constraints"]["BAU_maxcapacities"][t])
         print("Current horizon:", current_horizon)
         print("Should be 1000", maxcaps)
         p_nom = n.model["Generator-p_nom"]
@@ -965,9 +969,11 @@ def extra_functionality(n, snapshots):
     ``snakemake.config`` are expected to be attached to the network.
     """
     config = n.config
+    add_BAU_constraints(n, config)
     constraints = config["solving"].get("constraints", {})
-    if constraints["BAU"] and n.generators.p_nom_extendable.any():
-        add_BAU_constraints(n, config)
+    #if constraints["BAU"] and n.generators.p_nom_extendable.any():
+    #    add_BAU_constraints(n, config)
+    #    print("Adding BAU constraints")
     if constraints["SAFE"] and n.generators.p_nom_extendable.any():
         add_SAFE_constraints(n, config)
     if constraints["CCL"] and n.generators.p_nom_extendable.any():

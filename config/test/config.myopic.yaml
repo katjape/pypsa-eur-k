@@ -23,81 +23,81 @@ scenario:
   planning_horizons:
   #- 2020
   #- 2025
-  - 2030
+  #- 2030
   - 2035
   - 2040
   - 2045
-  - 2050
-  - 2055
+  #- 2050
+  #- 2055
 
 # fusion configuration
 fusion:
   include: true
-  entry_year: 2035
+  entry_year: 2045
 
 capacity_constraints:
   BAU_maxcapacities:
-    2030:
+    -5:
       fusion: 0
-    2035:
+    0: # entry year  max capacity
       fusion: 38.285
-    2040:
+    5: # max capacity after 5 years
       fusion: 493.339
-    2045:
+    10:
       fusion: 6357.220
-    2050: 
+    15: 
       fusion: 22607.220
-    2055:
+    20:
       fusion: 38857.218
-    2060:
+    25:
       fusion: 55107.202
-    2065:
+    30:
       fusion: 71356.989
-    2070: 
+    35: 
       fusion: 87604.249
-    2075: 
+    40: 
       fusion: 103818.935
-    2080: 
+    45: 
       fusion: 119613.880
-    2085: 
+    50: 
       fusion: 130000
-    2090: 
+    55: 
       fusion: 130000
-    2095:
+    60:
       fusion: 130000
-    2100:
+    65:
       fusion: 130000
 
   BAU_mincapacities:
-    2030:
+    -5:
       fusion: 0
-    2035: 
+    0: 
       fusion: 0
-    2040:
+    5:
       fusion: 0
-    2045:
+    10:
       fusion: 0
-    2050:
+    15:
       fusion: 0
-    2055:
+    20:
       fusion: 0
-    2060:
+    25:
       fusion: 0
-    2065:
+    30:
       fusion: 0
-    2070:
+    35:
       fusion: 0
-    2075:
+    40:
       fusion: 0
-    2080:
+    45:
       fusion: 0
-    2085:
+    50:
       fusion: 0
-    2090:
+    55:
       fusion: 0
-    2095:
+    60:
       fusion: 0
-    2100:
+    65:
       fusion: 0
 
   constraints:

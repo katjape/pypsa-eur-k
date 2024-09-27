@@ -1071,13 +1071,12 @@ def add_fusion_generation(
     n.madd(
         "Generator",
         nodes + " fusion",
-        bus=nodes, #+ "fusion",
+        bus=nodes,
         location=nodes,
         carrier="fusion",
         p_nom_extendable=True,
-        capital_costs=costs.at["fusion", "efficiency"]
-        * costs.at["fusion", "fixed"],  # NB: fixed cost is per MWel
-        marginal_costs=costs.at["fusion", "efficiency"]
+        capital_cost=costs.at["fusion", "efficiency"] * costs.at["fusion", "fixed"],  # NB: fixed cost is per MWel
+        marginal_cost=costs.at["fusion", "efficiency"]
         * costs.at["fusion", "VOM"],  # NB: VOM is per MWel,
         unit="MWh_el",
         efficiency=costs.at["fusion", "efficiency"],
@@ -4625,13 +4624,6 @@ if __name__ == "__main__":
     add_co2_tracking(n, costs, options)
 
     add_generation(n, costs)
-    
-    if snakemake.params.fusion_inclusion:
-        current_horizon=snakemake.wildcards.planning_horizons
-        print("Current horizon:",int(current_horizon))
-        if snakemake.params.fusion_entry_year <= int(current_horizon):
-            add_fusion_generation(n,costs)
-            print("Fusion added at entry year of", snakemake.params.fusion_entry_year)
 
     add_storage_and_grids(n, costs)
 
@@ -4673,6 +4665,13 @@ if __name__ == "__main__":
 
     if options["allam_cycle_gas"]:
         add_allam_gas(n, costs)
+    
+    if snakemake.params.fusion_inclusion:
+        current_horizon=snakemake.wildcards.planning_horizons
+        print("Current horizon:",int(current_horizon))
+        if snakemake.params.fusion_entry_year <= int(current_horizon):
+            add_fusion_generation(n,costs)
+            print("Fusion added at entry year of", snakemake.params.fusion_entry_year)
 
     n = set_temporal_aggregation(
         n, snakemake.params.time_resolution, snakemake.input.snapshot_weightings

@@ -25,7 +25,7 @@ run:
   - fusion-base-2035
   - fusion-base-2045
   - fusion-base-2055
-  #- reference
+  - reference
   scenarios:
     enable: true
     file: /dss/dssfs02/lwp-dss-0001/pn39ci/pn39ci-dss-0000/MA_Git/config/scenarios.yaml
@@ -58,7 +58,6 @@ scenario:
    - 2045
    - 2050
    - 2055
-   - 2050
    - 2065
    - 2075
    - 2085
@@ -93,67 +92,67 @@ fusion:
 # To be updated: No
 capacity_constraints:
   BAU_maxcapacities:
-    2030:
+    -5:
       fusion: 0
-    2035:
+    0: # entry year  max capacity
       fusion: 38.285
-    2040:
+    5: # max capacity after 5 years
       fusion: 493.339
-    2045:
+    10:
       fusion: 6357.220
-    2050: 
+    15: 
       fusion: 22607.220
-    2055:
+    20:
       fusion: 38857.218
-    2060:
+    25:
       fusion: 55107.202
-    2065:
+    30:
       fusion: 71356.989
-    2070: 
+    35: 
       fusion: 87604.249
-    2075: 
+    40: 
       fusion: 103818.935
-    2080: 
+    45: 
       fusion: 119613.880
-    2085: 
+    50: 
       fusion: 130000
-    2090: 
+    55: 
       fusion: 130000
-    2095:
+    60:
       fusion: 130000
-    2100:
+    65:
       fusion: 130000
 
   BAU_mincapacities:
-    2030:
+    -5:
       fusion: 0
-    2035: 
+    0: 
       fusion: 0
-    2040:
+    5:
       fusion: 0
-    2045:
+    10:
       fusion: 0
-    2050:
+    15:
       fusion: 0
-    2055:
+    20:
       fusion: 0
-    2060:
+    25:
       fusion: 0
-    2065:
+    30:
       fusion: 0
-    2070:
+    35:
       fusion: 0
-    2075:
+    40:
       fusion: 0
-    2080:
+    45:
       fusion: 0
-    2085:
+    50:
       fusion: 0
-    2090:
+    55:
       fusion: 0
-    2095:
+    60:
       fusion: 0
-    2100:
+    65:
       fusion: 0
 
 

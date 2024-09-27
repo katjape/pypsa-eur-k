@@ -22,9 +22,9 @@ remote:
 run:
   prefix: ""
   name:
-  - fusion-low-2035
-  - fusion-low-2045
-  - fusion-low-2055
+  - fusion-high-2035
+  - fusion-high-2045
+  - fusion-high-2055
   #- reference
   scenarios:
     enable: true
