@@ -23,9 +23,9 @@ run:
   prefix: ""
   name:
   - fusion-base-2035
-  - fusion-base-2045
-  - fusion-base-2055
-  - reference
+  #- fusion-base-2045
+  #- fusion-base-2055
+  #- reference
   scenarios:
     enable: true
     file: /dss/dssfs02/lwp-dss-0001/pn39ci/pn39ci-dss-0000/MA_Git/config/scenarios.yaml
@@ -56,7 +56,6 @@ scenario:
    - 2030
    - 2035
    - 2045
-   - 2050
    - 2055
    - 2065
    - 2075
