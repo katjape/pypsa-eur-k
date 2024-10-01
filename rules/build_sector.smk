@@ -6,7 +6,7 @@
 rule build_population_layouts:
     input:
         nuts3_shapes=resources("nuts3_shapes.geojson"),
-        urban_percent="/dss/dssfs02/lwp-dss-0001/pn39ci/pn39ci-dss-0000/input_files/API_SP.URB.TOTL.IN.ZS_DS2_en_csv_v2_1978.csv",
+        urban_percent="/Users/katjapelzer/Thesis/MA_Git/input_files/manual_files/API_SP.URB.TOTL.IN.ZS_DS2_en_csv_v2_1978.csv",
         cutout=lambda w: "cutouts/"
         + CDIR
         + config_provider("atlite", "default_cutout")(w)

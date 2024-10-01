@@ -1,4 +1,0 @@
-/var/slurmd-inter/job291960/slurm_script: line 14: /dss/dsshome1/0C/ge87say4/.conda_init: Permission denied
-/var/slurmd-inter/job291960/slurm_script: line 21: mamba: command not found
-/var/slurmd-inter/job291960/slurm_script: line 22: mamba: command not found
-/var/slurmd-inter/job291960/slurm_script: line 32: cd: /dss/dsshome1/0C/ge87say4/pypsa-eur-current/: Permission denied

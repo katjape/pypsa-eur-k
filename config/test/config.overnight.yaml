@@ -9,18 +9,96 @@ run:
   disable_progressbar: true
   shared_resources:
     policy: false
+    exclude: []
   shared_cutouts: true
 
 
 scenario:
   ll:
-  - v1.5
+  - vopt
   clusters:
   - 5
   sector_opts:
   - ''
   planning_horizons:
   - 2030
+  - 2035
+  - 2040
+  - 2045
+  - 2050
+  - 2065
+  - 2075
+  - 2100
+
+# fusion configuration
+fusion:
+  include: true
+  entry_year: 2035
+
+capacity_constraints:
+  BAU_maxcapacities:
+    -5:
+      fusion: 0
+    0: # entry year  max capacity
+      fusion: 38.285
+    5: # max capacity after 5 years
+      fusion: 493.339
+    10:
+      fusion: 6357.220
+    15: 
+      fusion: 22607.220
+    20:
+      fusion: 38857.218
+    25:
+      fusion: 55107.202
+    30:
+      fusion: 71356.989
+    35: 
+      fusion: 87604.249
+    40: 
+      fusion: 103818.935
+    45: 
+      fusion: 119613.880
+    50: 
+      fusion: 130000
+    55: 
+      fusion: 130000
+    60:
+      fusion: 130000
+    65:
+      fusion: 130000
+
+  BAU_mincapacities:
+    -5:
+      fusion: 0
+    0: 
+      fusion: 0
+    5:
+      fusion: 0
+    10:
+      fusion: 0
+    15:
+      fusion: 0
+    20:
+      fusion: 0
+    25:
+      fusion: 0
+    30:
+      fusion: 0
+    35:
+      fusion: 0
+    40:
+      fusion: 0
+    45:
+      fusion: 0
+    50:
+      fusion: 0
+    55:
+      fusion: 0
+    60:
+      fusion: 0
+    65:
+      fusion: 0
 
 countries: ['BE']
 
@@ -68,6 +146,9 @@ renewable:
 clustering:
   temporal:
     resolution_sector: 24h
+
+enable:
+  retrieve_cost_data: false
 
 sector:
   gas_network: true

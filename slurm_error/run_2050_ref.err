@@ -1,0 +1,15 @@
+
+EnvironmentNameNotFound: Could not find conda environment: snakemake
+You can list all discoverable environments with `conda info --envs`.
+
+
+TypeError in file /dss/dsshome1/01/go73lez2/pypsa-eur-current/Snakefile, line 25:
+can only concatenate list (not "str") to list
+  File "/dss/dsshome1/01/go73lez2/pypsa-eur-current/Snakefile", line 25, in <module>
+  File "/dss/dsshome1/01/go73lez2/pypsa-eur-current/scripts/_helpers.py", line 59, in get_rdir
+Config file /dss/dssfs02/lwp-dss-0001/pn39ci/pn39ci-dss-0000/MA_Git/config/config.default.yaml is extended by additional config specified via the command line.
+Config file /dss/dssfs02/lwp-dss-0001/pn39ci/pn39ci-dss-0000/MA_Git/config/config.fusion35-base.yaml is extended by additional config specified via the command line.
+TypeError in file /dss/dsshome1/01/go73lez2/pypsa-eur-current/Snakefile, line 25:
+can only concatenate list (not "str") to list
+  File "/dss/dsshome1/01/go73lez2/pypsa-eur-current/Snakefile", line 25, in <module>
+  File "/dss/dsshome1/01/go73lez2/pypsa-eur-current/scripts/_helpers.py", line 59, in get_rdir

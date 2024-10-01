@@ -5,13 +5,13 @@
 tutorial: true
 
 run:
-  name: "test-sector-myopic"
+  name: "test-sector-overnight-2"
   disable_progressbar: true
   shared_resources:
     policy: "test"
   shared_cutouts: true
 
-foresight: myopic
+foresight: overnight
 
 scenario:
   ll:
@@ -23,17 +23,18 @@ scenario:
   planning_horizons:
   #- 2020
   #- 2025
-  #- 2030
-  - 2035
-  - 2040
-  - 2045
+  - 2030
+  #- 2035
+  #- 2040
+  #- 2045
   #- 2050
-  #- 2055
+  #- 2075
+  #- 2100
 
 # fusion configuration
 fusion:
-  include: true
-  entry_year: 2045
+  include: false
+  entry_year: 2035
 
 capacity_constraints:
   BAU_maxcapacities:

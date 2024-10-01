@@ -21,17 +21,16 @@ remote:
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
   prefix: ""
-  name:
-  - fusion-base-2035
+  name: "fusion35-base-cap"
   #- fusion-base-2045
   #- fusion-base-2055
   #- reference
   scenarios:
-    enable: true
+    enable: false
     file: /dss/dssfs02/lwp-dss-0001/pn39ci/pn39ci-dss-0000/MA_Git/config/scenarios.yaml
   disable_progressbar: false
   shared_resources:
-    policy: true
+    policy: false
     exclude: []
   shared_cutouts: true
 
@@ -53,15 +52,15 @@ scenario:
   - ''
   planning_horizons:
   # - 2020
-   - 2030
+  # - 2030
    - 2035
-   - 2045
+  # - 2045
    - 2055
-   - 2065
+  # - 2065
    - 2075
-   - 2085
+  # - 2085
    - 2095
-   - 2100
+  # - 2100
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#countries
 countries: ['AL', 'AT', 'BA', 'BE', 'BG', 'CH', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL', 'NO', 'PL', 'PT', 'RO', 'RS', 'SE', 'SI', 'SK', 'XK']
@@ -93,34 +92,34 @@ capacity_constraints:
   BAU_maxcapacities:
     -5:
       fusion: 0
-    0: # entry year  max capacity
-      fusion: 38.285
-    5: # max capacity after 5 years
-      fusion: 493.339
-    10:
-      fusion: 6357.220
+    0: # entry year  max capacity, t=0
+      fusion: 44.175 # Exponential growth
+    5: # max capacity after 5 years, t+5
+      fusion: 569.238 # Exponential growth
+    10: 
+      fusion: 7335.253 # Linear growth
     15: 
-      fusion: 22607.220
+      fusion: 26085.253 # Linear growth
     20:
-      fusion: 38857.218
+      fusion: 44835.252 # Linear growth
     25:
-      fusion: 55107.202
+      fusion: 63585.233 # Linear growth
     30:
-      fusion: 71356.989
+      fusion: 82334.987 # Linear growth
     35: 
-      fusion: 87604.249
+      fusion: 101081.825 # Linear growth
     40: 
-      fusion: 103818.935
+      fusion: 119791.079 # Linear growth
     45: 
-      fusion: 119613.880
+      fusion: 138016.016 # Linear growth
     50: 
-      fusion: 130000
+      fusion: 150000 # Maturity
     55: 
-      fusion: 130000
+      fusion: 150000 # Maturity
     60:
-      fusion: 130000
+      fusion: 150000 # Maturity
     65:
-      fusion: 130000
+      fusion: 150000 # Maturity
 
   BAU_mincapacities:
     -5:
@@ -197,9 +196,9 @@ electricity:
 
   extendable_carriers:
     Generator: [solar, solar-hsat, onwind, offwind-ac, offwind-dc, offwind-float, OCGT, CCGT]
-    StorageUnit: [] # battery, H2
+    StorageUnit: [battery, H2] # battery, H2
     Store: [battery, H2]
-    Link: [] # H2 pipeline
+    Link: [H2 pipeline] # H2 pipeline
 
   powerplants_filter: (DateOut >= 2023 or DateOut != DateOut) and not (Country == 'Germany' and Fueltype == 'Nuclear')
   custom_powerplants: false
@@ -1314,7 +1313,7 @@ plotting:
 
   tech_colors:
     # fusion
-    fusion: "#FF10F0"
+    fusion: "#FFD580"
     # wind
     onwind: "#235ebc"
     onshore wind: "#235ebc"

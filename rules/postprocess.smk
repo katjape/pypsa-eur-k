@@ -230,10 +230,12 @@ rule plot_summary:
         balances=RESULTS + "csvs/supply_energy.csv",
         eurostat="data/eurostat/Balances-April2023",
         co2="data/bundle/eea/UNFCCC_v23.csv",
+        capacities=RESULTS + "csvs/capacities.csv",
     output:
         costs=RESULTS + "graphs/costs.svg",
         energy=RESULTS + "graphs/energy.svg",
         balances=RESULTS + "graphs/balances-energy.svg",
+        capacities=RESULTS + "graphs/capacities.svg",
     threads: 2
     resources:
         mem_mb=10000,

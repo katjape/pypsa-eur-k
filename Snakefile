@@ -16,13 +16,14 @@ from scripts._helpers import path_provider, copy_default_files, get_scenarios, g
 copy_default_files(workflow)
 
 
-configfile: "/Users/katjapelzer/pypsa-eur-current/config/config.default.yaml"
-configfile: "/Users/katjapelzer/pypsa-eur-current/config/config.default.yaml"
+configfile: "config/config.default.yaml"
+configfile: "config/config.yaml"
 
 
 run = config["run"]
 scenarios = get_scenarios(run)
 RDIR = get_rdir(run)
+
 shared_resources = run["shared_resources"]["policy"]
 exclude_from_shared = run["shared_resources"]["exclude"]
 logs = path_provider("logs/", RDIR, shared_resources, exclude_from_shared)
@@ -74,6 +75,7 @@ rule all:
     input:
         expand(RESULTS + "graphs/costs.svg", run=config["run"]["name"]),
     default_target: True
+
 
 
 rule create_scenarios:

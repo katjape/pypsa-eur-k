@@ -66,7 +66,7 @@ def plot_map(
     n,
     components=["links", "stores", "storage_units", "generators"],
     bus_size_factor=2e10,
-    transmission=False,
+    transmission=True,
     with_legend=True,
 ):
     tech_colors = snakemake.params.plotting["tech_colors"]

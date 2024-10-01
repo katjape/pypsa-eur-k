@@ -139,6 +139,8 @@ def plot_costs():
 
     df = cost_df.groupby(cost_df.index.get_level_values(2)).sum()
 
+    print("Costs: ", df)
+
     # convert to billions
     df = df / 1e9
 
@@ -158,6 +160,8 @@ def plot_costs():
     new_index = preferred_order.intersection(df.index).append(
         df.index.difference(preferred_order)
     )
+    print("New index: ", new_index)
+    print("Transposed: ", df.loc[new_index].T)
 
     # new_columns = df.sum().sort_values().index
 
@@ -260,6 +264,78 @@ def plot_energy():
     )
 
     fig.savefig(snakemake.output.energy, bbox_inches="tight")
+
+def plot_capacities():
+    energy_df = pd.read_csv(
+        snakemake.input.capacities, index_col=list(range(2)), header=list(range(n_header))
+    )
+
+    df = energy_df.groupby(energy_df.index.get_level_values(1)).sum()
+
+    # convert MWh to GWh
+    df = df / 1e3
+
+    df = df.groupby(df.index.map(rename_techs)).sum()
+
+    to_drop = df.index[
+        df.abs().max(axis=1) < 1
+    ]
+
+    logger.info(
+        f"Dropping all technology with energy capacity below 1 GWh/a"
+    )
+    logger.debug(df.loc[to_drop])
+
+    df = df.drop(to_drop)
+
+    logger.info(f"Total capacity of {round(df.sum().iloc[0])} GWh/a")
+
+    if df.empty:
+        fig, ax = plt.subplots(figsize=(12, 8))
+        fig.savefig(snakemake.output.capacities, bbox_inches="tight")
+        return
+
+    new_index = preferred_order.intersection(df.index).append(
+        df.index.difference(preferred_order)
+    )
+
+    # new_columns = df.columns.sort_values()
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    logger.debug(df.loc[new_index])
+
+    df.loc[new_index].T.plot(
+        kind="bar",
+        ax=ax,
+        stacked=True,
+        color=[snakemake.params.plotting["tech_colors"][i] for i in new_index],
+    )
+
+    handles, labels = ax.get_legend_handles_labels()
+
+    handles.reverse()
+    labels.reverse()
+
+    ax.set_ylim(
+        [
+            snakemake.params.plotting["energy_min"],
+            snakemake.params.plotting["energy_max"],
+        ]
+    )
+
+    ax.set_ylabel("Capacities [GWh/a]")
+
+    ax.set_xlabel("")
+
+    ax.grid(axis="x")
+
+    ax.legend(
+        handles, labels, ncol=1, loc="upper left", bbox_to_anchor=[1, 1], frameon=False
+    )
+
+    fig.savefig(snakemake.output.capacities, bbox_inches="tight")
+
 
 
 def plot_balances():
@@ -581,6 +657,8 @@ if __name__ == "__main__":
     plot_costs()
 
     plot_energy()
+
+    plot_capacities ()
 
     plot_balances()
 
