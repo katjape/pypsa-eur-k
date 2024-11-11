@@ -609,6 +609,10 @@ def add_EQ_constraints(n, o, scaling=1e-1):
         lhs = lhs_gen
     n.model.add_constraints(lhs >= rhs, name="equity_min")
 
+# pypsa-eur-k:
+# extended the following function by a global maximum capacity constraint for fusion, modelled based on Lopes 2016
+# links to the configuration file, where the capacity constraint can be defined
+# this function uses the capacity constraint from the config file, depending on the year that is currently optimized
 
 def add_BAU_constraints(n, config):
     """
@@ -965,7 +969,7 @@ def extra_functionality(n, snapshots):
     ``snakemake.config`` are expected to be attached to the network.
     """
     config = n.config
-    add_BAU_constraints(n, config)
+    add_BAU_constraints(n, config) # kape: for non-constrained runs, this function should be commented out
     #add_CCL_constraints(n, config)
     constraints = config["solving"].get("constraints", {})
     #if constraints["BAU"] and n.generators.p_nom_extendable.any():
@@ -1132,5 +1136,3 @@ if __name__ == "__main__":
             allow_unicode=True,
             sort_keys=False,
         )
-    
-    n.links.to_csv("/Users/katjapelzer/Thesis/MA_Git/test_outputs/solved.csv")

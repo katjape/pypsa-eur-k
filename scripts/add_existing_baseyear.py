@@ -217,7 +217,6 @@ def add_power_capacities_installed_before_baseyear(n, grouping_years, costs, bas
         values="Capacity",
         aggfunc="sum",
     )
-    df.to_csv("/Users/katjapelzer/Thesis/MA_Git/test_outputs/df_agg.csv")
 
     lifetime = df_agg.pivot_table(
         index=["grouping_year", "Fueltype"],

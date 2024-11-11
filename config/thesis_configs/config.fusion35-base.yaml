@@ -71,19 +71,21 @@ snapshots:
 enable:
   retrieve: auto
   retrieve_databundle: true
-  retrieve_cost_data: false #pypsa-eur-k
+  retrieve_cost_data: false # pypsa-eur-k
   build_cutout: false
-  retrieve_cutout: false #pypsa-eur-k
+  retrieve_cutout: false # pypsa-eur-k
   custom_busmap: false
   drop_leap_day: true
 
+# pypsa-eur-k:
 # fusion configuration
 fusion:
   include: true
   entry_year: 2035
 
-# Set capacity constraints in MW for fusion for each optimization step, calculated based on the paper from Lerede2023 and Lopes2016 - Update based on the PyPSA_Fusion capacity modelling tab
-# To be updated: No
+# pypsa-eur-k:
+# set capacity constraints in MW for fusion for each optimization step, calculated based on the paper from Lerede2023 and Lopes2016
+# has to be updated if a different saturation capacity is assumed
 capacity_constraints:
   BAU_maxcapacities:
     -5:
@@ -149,7 +151,7 @@ capacity_constraints:
     65:
       fusion: 0
 
-
+# pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#co2-budget
 co2_budget:
   2020: 0.701
@@ -485,7 +487,7 @@ biomass:
     - Sludge
     municipal solid waste:
     - Municipal waste
-  share_unsustainable_use_retained:
+  share_unsustainable_use_retained: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 1
     2025: 0.66
     2030: 0.33
@@ -503,7 +505,7 @@ biomass:
     2090: 0
     2095: 0
     2100: 0
-  share_sustainable_potential_available:
+  share_sustainable_potential_available: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0
     2025: 0.33
     2030: 0.66
@@ -553,7 +555,7 @@ sector:
   fossil_fuels: true
   district_heating:
     potential: 0.6
-    progress:
+    progress: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
       2020: 0.0
       2025: 0.15
       2030: 0.3
@@ -621,7 +623,7 @@ sector:
   bev_avail_max: 0.95
   bev_avail_mean: 0.8
   v2g: true
-  land_transport_fuel_cell_share:
+  land_transport_fuel_cell_share: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0
     2025: 0
     2030: 0
@@ -640,7 +642,7 @@ sector:
     2090: 0
     2095: 0
     2100: 0    
-  land_transport_electric_share:
+  land_transport_electric_share: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0
     2025: 0.15
     2030: 0.3
@@ -658,7 +660,7 @@ sector:
     2090: 1
     2095: 1
     2100: 1
-  land_transport_ice_share:
+  land_transport_ice_share: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 1
     2025: 0.85
     2030: 0.7
@@ -687,7 +689,7 @@ sector:
   MWh_MeOH_per_tCO2: 4.0321
   MWh_MeOH_per_MWh_e: 3.6907
   shipping_hydrogen_liquefaction: false
-  shipping_hydrogen_share:
+  shipping_hydrogen_share: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0
     2025: 0
     2030: 0
@@ -705,7 +707,7 @@ sector:
     2090: 0
     2095: 0
     2100: 0
-  shipping_methanol_share:
+  shipping_methanol_share: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0
     2025: 0.15
     2030: 0.3
@@ -723,7 +725,7 @@ sector:
     2090: 1
     2095: 1
     2100: 1
-  shipping_oil_share:
+  shipping_oil_share: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 1
     2025: 0.85
     2030: 0.7
@@ -751,12 +753,12 @@ sector:
   reduce_space_heat_exogenously_factor:
     2020: 0.10  # this results in a space heat demand reduction of 10%
     2025: 0.09  # first heat demand increases compared to 2020 because of larger floor area per capita
-    2030: 0.09
+    2030: 0.09 
     2035: 0.11
     2040: 0.16
     2045: 0.21
     2050: 0.29
-    2055: 0.29
+    2055: 0.29 # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2060: 0.29
     2065: 0.29
     2070: 0.29
@@ -812,7 +814,7 @@ sector:
     min_size: 3
     max_size: 25
     years_of_storage: 25
-  co2_sequestration_potential:
+  co2_sequestration_potential: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0
     2025: 0
     2030: 50
@@ -927,7 +929,7 @@ sector:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#industry
 industry:
-  St_primary_fraction:
+  St_primary_fraction: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0.6
     2025: 0.55
     2030: 0.5
@@ -945,7 +947,7 @@ industry:
     2090: 0.3
     2095: 0.3
     2100: 0.3
-  DRI_fraction:
+  DRI_fraction: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0
     2025: 0
     2030: 0.05
@@ -965,7 +967,7 @@ industry:
     2100: 1
   H2_DRI: 1.7
   elec_DRI: 0.322
-  Al_primary_fraction:
+  Al_primary_fraction: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0.4
     2025: 0.375
     2030: 0.35
@@ -995,7 +997,7 @@ industry:
   #2020 recycling rates based on Agora https://static.agora-energiewende.de/fileadmin/Projekte/2021/2021_02_EU_CEAP/A-EW_254_Mobilising-circular-economy_study_WEB.pdf
   #fractions refer to the total primary HVC production in 2020
   #assumes 6.7 Mtplastics produced from recycling in 2020
-  HVC_primary_fraction:
+  HVC_primary_fraction: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 1.0
     2025: 0.9
     2030: 0.8
@@ -1013,7 +1015,7 @@ industry:
     2090: 0.4
     2095: 0.4
     2100: 0.4
-  HVC_mechanical_recycling_fraction:
+  HVC_mechanical_recycling_fraction: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0.12
     2025: 0.15
     2030: 0.18
@@ -1031,7 +1033,7 @@ industry:
     2090: 0.30
     2095: 0.30
     2100: 0.30
-  HVC_chemical_recycling_fraction:
+  HVC_chemical_recycling_fraction: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0.0
     2025: 0.0
     2030: 0.04
@@ -1052,7 +1054,7 @@ industry:
   HVC_environment_sequestration_fraction: 0.
   waste_to_energy: false
   waste_to_energy_cc: false
-  sector_ratios_fraction_future:
+  sector_ratios_fraction_future: # pypsa-eur-k: extended up to 2100, assuming the same share as in 2050
     2020: 0.0
     2025: 0.1
     2030: 0.3
@@ -1291,7 +1293,7 @@ plotting:
   nice_names:
     OCGT: "Open-Cycle Gas"
     CCGT: "Combined-Cycle Gas"
-    fusion: "Fusion"
+    fusion: "Fusion" # pypsa-eur-k: fusion included with nice name
     offwind-ac: "Offshore Wind (AC)"
     offwind-dc: "Offshore Wind (DC)"
     offwind-float: "Offshore Wind (Floating)"
@@ -1308,7 +1310,7 @@ plotting:
     dc: "DC"
 
   tech_colors:
-    # fusion
+    # pypsa-eur-k: fusion included as light orange
     fusion: "#FFD580"
     # wind
     onwind: "#235ebc"

@@ -1061,6 +1061,9 @@ def add_dac(n, costs):
         lifetime=costs.at["direct air capture", "lifetime"],
     )
 
+# pypsa-eur-k
+# adds a fusion generator capacity option to every node, which can be installed based on the optimization outcome
+# similar implementation as for convententional generation
 def add_fusion_generation(
         n,
         costs
@@ -1070,12 +1073,12 @@ def add_fusion_generation(
     n.add("Carrier", "fusion")
 
     n.madd(
-        "Generator",
-        nodes + " fusion",
-        bus=nodes,
-        location=nodes,
-        carrier="fusion",
-        p_nom_extendable=True,
+        "Generator", # implemented as a generator, as fusion only has to connect to one outbus bus: electricity
+        nodes + " fusion", # name of the new type of node
+        bus=nodes, # connects the fusion bus to the electricity network
+        location=nodes, # added to every node in the network
+        carrier="fusion", # newly defined carrier for fusion
+        p_nom_extendable=True, # sets capacity expansion to true, hence capacity expansion is optimized
         capital_cost=costs.at["fusion", "efficiency"] * costs.at["fusion", "fixed"],  # NB: fixed cost is per MWel
         marginal_cost=costs.at["fusion", "efficiency"]
         * costs.at["fusion", "VOM"],  # NB: VOM is per MWel,
@@ -4679,6 +4682,9 @@ if __name__ == "__main__":
     if options["allam_cycle_gas"]:
         add_allam_gas(n, costs)
     
+    # pypsa-eur-k:
+    # only if fusion is specified as to be included (fusion: include: true), the model derives the inclusion year from the config.
+
     if snakemake.params.fusion_inclusion:
         current_horizon=snakemake.wildcards.planning_horizons
         print("Current horizon:",int(current_horizon))
@@ -4758,4 +4764,3 @@ if __name__ == "__main__":
     sanitize_locations(n)
 
     n.export_to_netcdf(snakemake.output[0])
-    n.links.to_csv("/Users/katjapelzer/Thesis/MA_Git/test_outputs/links_afteradd_prepare_sector_network.csv")
