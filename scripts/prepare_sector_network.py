@@ -519,6 +519,7 @@ def add_carrier_buses(n, carrier, nodes=None):
     )
 
     fossils = ["coal", "gas", "oil", "lignite"]
+    print("Triggered: ", options["fossil_fuels"])
     if options["fossil_fuels"] and carrier in fossils:
 
         suffix = ""
@@ -1082,6 +1083,17 @@ def add_fusion_generation(
         efficiency=costs.at["fusion", "efficiency"],
         lifetime=costs.at["fusion", "lifetime"],
     )
+def set_phase_out(n, carrier, ct, phase_out_year):
+    """
+    Set planned phase outs for given carrier,country (ct) and planned year of
+    phase out (phase_out_year).
+    """
+    df = n.links[(n.links.carrier.isin(carrier)) & (n.links.bus1.str[:2] == ct)]
+    # assets which are going to be phased out before end of their lifetime
+    assets_i = df[df[["build_year", "lifetime"]].sum(axis=1) > phase_out_year].index
+    build_year = n.links.loc[assets_i, "build_year"]
+    # adjust lifetime
+    n.links.loc[assets_i, "lifetime"] = (phase_out_year - build_year).astype(float)
 
 def add_co2limit(n, options, nyears=1.0, limit=0.0):
     logger.info(f"Adding CO2 budget limit as per unit of 1990 levels of {limit}")
@@ -4623,6 +4635,7 @@ if __name__ == "__main__":
 
     add_co2_tracking(n, costs, options)
 
+
     add_generation(n, costs)
 
     add_storage_and_grids(n, costs)
@@ -4703,7 +4716,7 @@ if __name__ == "__main__":
 
     if options["electricity_distribution_grid"]:
         insert_electricity_distribution_grid(n, costs)
-
+    
     if options["enhanced_geothermal"].get("enable", False):
         logger.info("Adding Enhanced Geothermal Systems (EGS).")
         add_enhanced_geothermal(
@@ -4745,3 +4758,4 @@ if __name__ == "__main__":
     sanitize_locations(n)
 
     n.export_to_netcdf(snakemake.output[0])
+    n.links.to_csv("/Users/katjapelzer/Thesis/MA_Git/test_outputs/links_afteradd_prepare_sector_network.csv")

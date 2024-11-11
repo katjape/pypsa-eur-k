@@ -217,6 +217,7 @@ def add_power_capacities_installed_before_baseyear(n, grouping_years, costs, bas
         values="Capacity",
         aggfunc="sum",
     )
+    df.to_csv("/Users/katjapelzer/Thesis/MA_Git/test_outputs/df_agg.csv")
 
     lifetime = df_agg.pivot_table(
         index=["grouping_year", "Fueltype"],
@@ -290,7 +291,6 @@ def add_power_capacities_installed_before_baseyear(n, grouping_years, costs, bas
             bus0 = vars(spatial)[carrier[generator]].nodes
             if "EU" not in vars(spatial)[carrier[generator]].locations:
                 bus0 = bus0.intersection(capacity.index + " " + carrier[generator])
-
             # check for missing bus
             missing_bus = pd.Index(bus0).difference(n.buses.index)
             if not missing_bus.empty:
@@ -335,6 +335,7 @@ def add_power_capacities_installed_before_baseyear(n, grouping_years, costs, bas
                         build_year=grouping_year,
                         lifetime=lifetime_assets.loc[new_capacity.index],
                     )
+
                 else:
                     key = "central solid biomass CHP"
                     central_heat = n.buses.query(

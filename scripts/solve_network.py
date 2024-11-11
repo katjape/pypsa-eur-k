@@ -507,6 +507,9 @@ def add_CCL_constraints(n, config):
         )
         rhs_cst.index = rhs_cst.index.rename({"bus": "country"})
         rhs_min = agg_p_nom_minmax["min"].dropna()
+        rhs_min.index.set_names(['country', 'carrier'], inplace=True)
+        print("rhs_min index names:", rhs_min.index.names)
+        print("rhs_cst index names:", rhs_cst.index.names)
         idx_min = rhs_min.index.join(rhs_cst.index, how="left")
         rhs_min = rhs_min.reindex(idx_min).fillna(0)
         rhs = (rhs_min - rhs_cst.reindex(idx_min).fillna(0).p_nom).dropna()
@@ -523,6 +526,9 @@ def add_CCL_constraints(n, config):
 
     if config["solving"]["agg_p_nom_limits"]["include_existing"]:
         rhs_max = agg_p_nom_minmax["max"].dropna()
+        rhs_max.index.set_names(['country', 'carrier'], inplace=True)
+        print("rhs_max index names:", rhs_max.index.names)
+        print("rhs_cst index names:", rhs_cst.index.names)
         idx_max = rhs_max.index.join(rhs_cst.index, how="left")
         rhs_max = rhs_max.reindex(idx_max).fillna(0)
         rhs = (rhs_max - rhs_cst.reindex(idx_max).fillna(0).p_nom).dropna()
@@ -631,25 +637,15 @@ def add_BAU_constraints(n, config):
     """
     current_horizon=snakemake.wildcards.planning_horizons
     t = int(current_horizon)- int(snakemake.params.fusion_entry_year)
+    existing_capacity = n.generators.query("carrier == 'fusion' and not p_nom_extendable")["p_nom"].sum()
 
     if t<0:
         t=-5
 
-    if "BAU_mincapacities" in config["capacity_constraints"]:    
-        # Added a function which sets a maximum capacity per carrier across all nodes (Aim: Fusion, which is added as a Link)
-        mincaps = pd.Series(config["capacity_constraints"]["BAU_mincapacities"][t])
-        print("Minimum capacity: should be 0", mincaps)
-        p_nom = n.model["Generator-p_nom"]
-        ext_i = n.generators.query("p_nom_extendable")
-        ext_carrier_i = xr.DataArray(ext_i.carrier.rename_axis("Generator-ext"))
-        lhs = p_nom.groupby(ext_carrier_i).sum()
-        lhs = lhs[lhs.indexes["carrier"].isin(mincaps.index)]
-        rhs = mincaps[lhs.indexes["carrier"]].rename_axis("carrier")
-        n.model.add_constraints(lhs >= rhs, name="bau_mincaps")
-
     if "BAU_maxcapacities" in config["capacity_constraints"]:    
         # Added a function which sets a maximum capacity per carrier across all nodes (Aim: Fusion, which is added as a Link)
         maxcaps = pd.Series(config["capacity_constraints"]["BAU_maxcapacities"][t])
+        maxcaps["fusion"] = max(0, maxcaps["fusion"] - existing_capacity) # subtract existing capacity from the limit, as otherwise only newly added generators fall below this 
         print("Current horizon:", current_horizon)
         print("Should be 1000", maxcaps)
         p_nom = n.model["Generator-p_nom"]
@@ -970,14 +966,15 @@ def extra_functionality(n, snapshots):
     """
     config = n.config
     add_BAU_constraints(n, config)
+    #add_CCL_constraints(n, config)
     constraints = config["solving"].get("constraints", {})
     #if constraints["BAU"] and n.generators.p_nom_extendable.any():
     #    add_BAU_constraints(n, config)
     #    print("Adding BAU constraints")
     if constraints["SAFE"] and n.generators.p_nom_extendable.any():
         add_SAFE_constraints(n, config)
-    if constraints["CCL"] and n.generators.p_nom_extendable.any():
-        add_CCL_constraints(n, config)
+    #if constraints["CCL"] and n.generators.p_nom_extendable.any():
+    #    add_CCL_constraints(n, config)
 
     reserve = config["electricity"].get("operational_reserve", {})
     if reserve.get("activate"):
@@ -1135,3 +1132,5 @@ if __name__ == "__main__":
             allow_unicode=True,
             sort_keys=False,
         )
+    
+    n.links.to_csv("/Users/katjapelzer/Thesis/MA_Git/test_outputs/solved.csv")

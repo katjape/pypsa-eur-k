@@ -16,7 +16,7 @@ from scripts._helpers import path_provider, copy_default_files, get_scenarios, g
 copy_default_files(workflow)
 
 
-configfile: "config/config.default.yaml"
+configfile: "config/thesis_configs/completed/config.fusion35-base-nocap.yaml"
 configfile: "config/config.yaml"
 
 
@@ -75,7 +75,6 @@ rule all:
     input:
         expand(RESULTS + "graphs/costs.svg", run=config["run"]["name"]),
     default_target: True
-
 
 
 rule create_scenarios:
