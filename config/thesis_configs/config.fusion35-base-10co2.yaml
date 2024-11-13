@@ -152,22 +152,23 @@ capacity_constraints:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#co2-budget
 co2_budget:
-  2020: 0.701 # not relevant as we start optimizing in 2030
-  2025: 0.701 # not relevant as we start optimizing in 2030
-  2030: 0.550
-  2035: 0.284
-  2040: 0.146
-  2045: 0.075
-  2050: 0.039
-  2055: 0.02
-  2060: 0.00
-  2065: 0.000
-  2070: 0.000
-  2075: 0.000
-  2080: 0.000
-  2085: 0.000
-  2090: 0.000
-  2095: 0.000
+  co2_budget:
+  2020: 0.701
+  2025: 0.701
+  2030: 0.701
+  2035: 0.524
+  2040: 0.297
+  2045: 0.15
+  2050: 0.071
+  2055: 0.032
+  2060: 0.0
+  2065: 0.0
+  2070: 0.0
+  2075: 0.0
+  2080: 0.0
+  2085: 0.0
+  2090: 0.0
+  2095: 0.0
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#electricity
 electricity:
